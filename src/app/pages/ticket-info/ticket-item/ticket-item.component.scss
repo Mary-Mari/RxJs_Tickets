@@ -1,0 +1,36 @@
+.ticket-title {
+  max-width: 400px;
+  margin: 0 auto;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 25px
+}
+
+.ticket-description {
+  max-width: 600px;
+  font-size: 16px;
+  margin: 0 auto
+
+}
+
+.ticket-link {
+  text-decoration: none;
+  display: inline-block;
+  padding: 7px;
+  margin-top: 20px;
+  margin-bottom: 45px;
+  border: 1px solid #dad5d5;
+  background: #cdf0f1;
+  color: black;
+  border-radius: 6px;
+  transition: all .3s ease-in-out;
+}
+
+.ticket-link:hover {
+  transform: translateY(2px);
+  transition: all .3s ease-in-out;
+}
+
+.btn-ticket {
+  text-align: center;
+}

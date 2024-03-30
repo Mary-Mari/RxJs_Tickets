@@ -1,0 +1,47 @@
+:host {
+  height: 80px;
+  display: block;
+  margin: 20px 0 20px 0;
+}
+
+.header-container {
+  position: relative;
+}
+
+.image-header {
+  position: absolute;
+  left: 63%;
+  width: 13%;
+}
+
+
+
+.user-info {
+  position: absolute;
+  left: 40%;
+  margin: 28px;
+  display: inline-block;
+  border-radius: 10px;
+
+}
+:host ::ng-deep .p-menubar  {
+  box-shadow: 10px 5px 5px;
+  height: 80px;
+  padding-left: 56px;
+}
+
+:host ::ng-deep .p-menubar-root-list {
+  box-shadow: inset 0px 5px 10px 0px;
+  transition: all .3s ease-in-out;
+}
+
+
+:host ::ng-deep .p-menubar-root-list:hover{
+  transform: translateY(1px);
+  transition: all .3s ease-in-out;
+  box-shadow: inset 0px 10px 20px 2px;
+}
+
+:host  ::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link {
+  border-radius: 0;
+}

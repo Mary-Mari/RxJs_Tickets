@@ -1,0 +1,22 @@
+:host {
+  min-width: 300px;
+  flex-basis: 300px;
+  border: 1px solid gray;
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+}
+
+.image-aside {
+  position: absolute;
+  bottom: 0;
+  width: 57%;
+  z-index: -1;
+}
+
+
+.aside-container {
+  width: 48%;
+  margin: 0 auto;
+  margin-top: 10px;
+}

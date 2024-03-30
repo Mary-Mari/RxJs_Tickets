@@ -1,0 +1,63 @@
+<div class="input-container d-flex">
+  <div  class="search-container">
+    <div>
+      <input type="text"
+             [(ngModel)]="searchQuery"
+             placeholder="Поиск по имени тура ..." (input)="searchOnButtonClick()">
+    </div>
+    <div class="search-error" *ngIf="showFilteredResults && filteredTour.length === 0
+                && searchQuery">Нет подходящего результата &#9785;</div>
+</div>
+<!--    <button class="btn" (click)="searchOnButtonClick()">Поиск</button>-->
+  </div>
+<div  *ngIf ="tickets && showFilteredResults">
+  <div>
+    <p>Туров: {{tourWrap.childElementCount}}</p>
+    <p>Активный элемент: {{blockDirective.activeElementIndex}}</p>
+  </div>
+  <div appBlockStyle
+       #tourWrap
+       #blockDirective = 'blockStyle'
+       [selector] = "'.ticket-item'"
+       [initFirst] = "false"
+       (renderComplete)="directiveRenderComplete($event)"
+       class="d-flex flex-wrap justify-content-around">
+    <div class="ticket-item col-3 m-2"
+         (click)="goToTicketInfoPage(tour)"
+         *ngFor="let tour of filteredTour; let i = index">
+      <div class="ticket-img">
+        <img alt="tour" class="w-100" src="/assets/img/{{tour.img}}"/>
+      </div>
+      <div class="ticket-title">{{tour.name}}</div>
+      <div class="ticket-price">{{tour.price}}</div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf ="tickets && !showFilteredResults">
+  <div>
+    <p>Туров: {{tourWrap.childElementCount}}</p>
+    <p>Активный элемент: {{blockDirective.activeElementIndex}}</p>
+    <p></p>
+  </div>
+  <div appBlockStyle
+       #tourWrap
+       #blockDirective = 'blockStyle'
+       [selector] = "'.ticket-item'"
+       [initFirst] = "false"
+       (renderComplete)="directiveRenderComplete($event)"
+       class="d-flex flex-wrap justify-content-around">
+    <div class="ticket-item col-3 m-2"
+         (click)="goToTicketInfoPage(items)"
+         *ngFor="let items of tickets; let i = index">
+      <div class="ticket-img">
+        <img alt="tour" class="w-100" src="/assets/img/{{items.img}}"/>
+      </div>
+      <div class="ticket-title">{{items.name}}</div>
+      <div class="ticket-price">{{items.price}}</div>
+    </div>
+  </div>
+</div>
+
+
