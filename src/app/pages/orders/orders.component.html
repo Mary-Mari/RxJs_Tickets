@@ -1,0 +1,31 @@
+<div>
+  <app-header></app-header>
+<div class="m-4 px-5">
+  <app-order-header></app-order-header>
+</div>
+<div class="px-5">
+  <p-treeTable [value]="tableData$ | async">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Тип</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+      <tr>
+        <td >
+          <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+          <p>{{rowData.name}}</p>
+        </td>
+        <td>{{rowData.description}}</td>
+        <td>{{rowData.type}}</td>
+      </tr>
+    </ng-template>
+  </p-treeTable>
+</div>
+
+  <app-footer></app-footer>
+</div>
+

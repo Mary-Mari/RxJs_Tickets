@@ -21,6 +21,7 @@ export class BlockStyleDirective implements OnInit, AfterViewInit, OnChanges {
   $event: KeyboardEvent;
   showFilteredResults: boolean = false;
 
+
   constructor(private el: ElementRef,
              ) {}
 
@@ -76,5 +77,11 @@ export class BlockStyleDirective implements OnInit, AfterViewInit, OnChanges {
       this.activeElementIndex = this.index;
     }
   }
+
+  updateItems(): void {
+    this.items = this.el.nativeElement.querySelectorAll(this.selector);
+  }
 }
+
+
 

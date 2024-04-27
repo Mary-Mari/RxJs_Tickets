@@ -10,6 +10,10 @@ import { AsideComponent } from './aside/aside.component';
 import { DropdownModule } from 'primeng/dropdown';
 import  {FormsModule} from "@angular/forms";
 import {BlockStyleDirective} from "../../directive/block-style.directive";
+import {CalendarModule} from "primeng/calendar";
+import {ToastModule} from "primeng/toast";
+import {MessageService} from "primeng/api";
+import {InputTextModule} from "primeng/inputtext";
 
 
 @NgModule({
@@ -20,6 +24,12 @@ import {BlockStyleDirective} from "../../directive/block-style.directive";
     TicketlistComponent,
     AsideComponent,
     BlockStyleDirective
+
+  ],
+  exports: [
+    HeaderComponent,
+    FooterComponent,
+    AsideComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +37,11 @@ import {BlockStyleDirective} from "../../directive/block-style.directive";
     MenubarModule,
     DropdownModule,
     FormsModule,
-    NgOptimizedImage
-  ]
+    NgOptimizedImage,
+    CalendarModule,
+    ToastModule,
+    InputTextModule
+  ],
+  providers: [MessageService]
 })
 export class TicketsModule { }

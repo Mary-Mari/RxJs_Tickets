@@ -4,7 +4,29 @@ export interface ITour {
   tourOperator: string,
   price: string,
   img: string,
-  id:string
+  id:string,
+  type?:string,
+  date?: string,
 }
 
-export  const tours = 'tours'
+export interface  ITourTypeSelect {
+  label?: string,
+  value?: string,
+  date?: string
+}
+
+export interface INearestTour extends  ITour {
+  locationId: string
+}
+
+export interface  ITourLocation {
+  name: string,
+  id: string
+}
+export interface INewNearestTour extends  INearestTour {
+  countryName: string
+}
+
+
+
+

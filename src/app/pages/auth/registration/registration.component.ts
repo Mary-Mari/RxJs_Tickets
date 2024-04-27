@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MessageService} from "primeng/api";
 import {IUser} from "../../../models/users";
 import {AuthService} from "../../../services/auth/auth.service";
+import {ConfigService} from "../../../../assets/config/config-service/config.service";
 
 @Component({
   selector: 'app-registration',
@@ -15,11 +16,13 @@ export class RegistrationComponent implements OnInit {
   email: string;
   cardNumber: string;
   storageValue: boolean;
+  showCardNumber: boolean;
 
   constructor( private  messageService: MessageService,
                private  authService: AuthService) { }
 
   ngOnInit(): void {
+    this.showCardNumber = ConfigService.config.useUserCard
   }
 
   localStorageUser():void {
@@ -50,7 +53,7 @@ export class RegistrationComponent implements OnInit {
 
     if(this.storageValue) {
       let jsonUser = JSON.stringify(userObj)
-    localStorage.setItem("token", jsonUser)
+      localStorage.setItem("token", jsonUser)
     }
   }
 

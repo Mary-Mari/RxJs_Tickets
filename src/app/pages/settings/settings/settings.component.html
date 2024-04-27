@@ -1,0 +1,41 @@
+<div class="d-flex flex-column">
+
+    <div class="mx-3">
+      <router-outlet></router-outlet>
+      <h2 class="title">Смена пароля</h2>
+      <div class="inputs d-flex flex-column registration-input-wrap m-auto">
+        <div class="my-2 ">
+          <span class="mx-3"> Текущий пароль</span>
+          <input type="password"
+                 pInputText
+                 [ngClass]= "{'input-error': !psw}"
+                 [(ngModel)]="psw"/>
+        </div>
+        <div class="my-2 ">
+          <span class="mx-3">Новый пароль</span>
+          <input type="password"
+                 pInputText
+                 [ngClass]= "{'input-error': !newPsw}"
+                 [(ngModel)]="newPsw"/>
+        </div>
+        <div class="my-2 ">
+          <span class="mx-3">Подтверждение пароля</span>
+          <input type="password"
+                 pInputText
+                 [ngClass]= "{'input-error': !pswRepeat}"
+                 [(ngModel)]="pswRepeat"/>
+        </div>
+        <div class="mx-3">
+          <button [disabled]=" !psw || !pswRepeat"
+                  (click)="changePassword($event)"
+                  type="button"
+                  class="btn btn-success">Сменить пароль</button>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+<footer>
+  
+</footer>
+<p-toast position="top-left" ></p-toast>

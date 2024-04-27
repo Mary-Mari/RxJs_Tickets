@@ -10,7 +10,8 @@
     <div class="overflow-auto h-100 w-100">
       <router-outlet></router-outlet>
     </div>
-    <app-aside  (updateMenuType)="updateSelectedType($event)"></app-aside>
+    <app-aside  *ngIf="showAside" class="d-flex flex-column h-100 p-2"
+                (updateMenuType)="updateSelectedType($event)"></app-aside>
   </div>
 
   <footer>
