@@ -9,12 +9,23 @@ import {DropdownModule} from "primeng/dropdown";
 import {ToastModule} from "primeng/toast";
 import {InputTextModule} from "primeng/inputtext";
 import {PaginatorModule} from "primeng/paginator";
+import { TabViewModule } from 'primeng/tabview';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { StatisticComponent } from './statistic/statistic.component';
+import { TourLoaderComponent } from './tour-loader/tour-loader.component';
+import { TableModule } from 'primeng/table';
+
+
 
 
 @NgModule({
   declarations: [
     SettingsComponent,
-
+    ChangePasswordComponent,
+    StatisticComponent,
+    TourLoaderComponent
   ],
   imports: [
     CommonModule,
@@ -23,9 +34,14 @@ import {PaginatorModule} from "primeng/paginator";
     CalendarModule,
     DropdownModule,
     ToastModule,
-    InputTextModule,
+    InputTextModule, 
     PaginatorModule,
-
+    TabViewModule,
+    ReactiveFormsModule,
+    TableModule
+  ],
+  providers: [
+    MessageService
   ]
 })
 export class SettingsModule { }

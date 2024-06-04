@@ -1,58 +1,65 @@
 <div class="ticket-info-wrap">
-
-    <a routerLink="/tickets/tickets-list">Назад</a>
-    <div class="mt-3 ml-3">
+  <a routerLink="/tickets/tickets-list">Назад</a>
+  <div class="mt-3 ml-3">
       {{ ticket?.name }}
-    </div>
+  </div>
 
   <div class="mt-3 ml-4">
-    <h3>Информация о туре </h3>
-    <h4 class="mb-4">Личная информация</h4>
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="ml-4">
-        <div class="p-field">
-          <label for="firstName" class="p-float-label">Имя</label>
-          <input id="firstName" type="text" pInputText formControlName="firstName" />
-        </div>
-        <div class="p-field">
-          <label for="lastName" class="p-float-label">Фамилия</label>
-          <input id="lastName" type="text" pInputText formControlName="lastName" />
-        </div>
-        <div class="p-field">
-          <label for="dateOfBirth" class="p-float-label">Дата рождения</label>
-          <p-calendar id="dateOfBirth" formControlName="dateOfBirth"></p-calendar>
-        </div>
-        <div class="p-field">
-          <label for="cardNumber" class="p-float-label">Номер карты</label>
-          <input id="cardNumber" type="text" pInputText formControlName="cardNumber" />
-        </div>
-        <div class="p-field">
-          <label for="age" class="p-float-label">Возраст</label>
-          <input id="age" type="number" pInputNumber formControlName="age" />
-        </div>
-        <div class="p-field">
-          <label for="citizenship" class="p-float-label">Гражданство</label>
-          <input id="citizenship" type="text" pInputText formControlName="citizenship" />
-        </div>
+      <h3>Информация о туре </h3>
+      <h4 class="mb-4">Личная информация</h4>
+      <form [formGroup]="userForm" (ngSubmit)="submitForm()" class="ml-4">
+          <div class="p-field">
+              <label for="firstName" class="p-float-label">Имя</label>
+              <input id="firstName" type="text" pInputText formControlName="firstName" />
+          </div>
+          <div class="p-field">
+              <label for="lastName" class="p-float-label">Фамилия</label>
+              <input id="lastName" type="text" pInputText formControlName="lastName" />
+          </div>
+          <div class="p-field">
+              <label for="dateOfBirth" class="p-float-label">Дата рождения</label>
+              <p-calendar id="dateOfBirth" formControlName="dateOfBirth"></p-calendar>
+          </div>
+          <div class="p-field">
+              <label for="cardNumber" class="p-float-label">Номер карты</label>
+              <input id="cardNumber" type="text" pInputText formControlName="cardNumber" />
+          </div>
+          <div class="p-field">
+              <label for="age" class="p-float-label">Возраст</label>
+              <input id="age" type="number" pInputNumber formControlName="age" />
+          </div>
+          <div class="p-field">
+              <label for="citizenship" class="p-float-label">Гражданство</label>
+              <input id="citizenship" type="text" pInputText formControlName="citizenship" />
+          </div>
 
-        <div class="mt-4">
-          <button class="btn-success btn" type="submit"
-                  [disabled]="!userForm.valid">Перейти к оформлению</button>
+          <div class="mt-4">
+              <button class="btn-success btn" type="submit" 
+              (click)="initTour()"
+              [disabled]="!userForm.valid">Перейти к оформлению</button>
+          </div>
+      </form>
+
+      <div class="mt-4 col-3">
+        <h4>Похожие туры</h4>
+        <div>
+          <input
+            #ticketSearch
+            pInputText
+            type="text"
+          />
         </div>
-    </form>
+        <p-carousel [value]="nearestTours" *ngIf="!isNotFound">
+          <ng-template pTemplate="header"></ng-template>
+          <ng-template let-tour pTemplate="item">
+            {{tour.name}} ({{getTourCountry(tour)}})
+            <div>
+              <img class="w-100 h-100" src="http://localhost:3000/public/{{tour.img}}">
+            </div>
+          </ng-template>
+      
+        </p-carousel>
+      
+      </div>
   </div>
-    </div>
-
-
-  <div class="mt-4">
-    <h4 class="text-center">Похожие туры</h4>
-
-    <p-carousel [value]="newNearestTour" >
-      <ng-template let-tour pTemplate="item" >
-        <p class="title-country"> Страна:  {{tour.toursLocation }}</p>
-        <p class="container"> {{tour.name}}</p>
-        <div class="ticket-img-nearest">
-          <img class="w-100 h-100" src="/assets/img/{{tour.img}}"/>
-        </div>
-      </ng-template>
-    </p-carousel>
-  </div>
+</div>

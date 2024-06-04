@@ -6,41 +6,40 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: all  .3s ease-in-out;
-  & .ticket-title {
-    padding: 2px;
-    font-weight: bolder;
-    text-align: center;
-  }
+  transition: all 0.3s ease-in-out;
+}
 
-  & img {
-    height: 200px;
-    border-radius: 7px;
-  }
+.ticket-item .ticket-title {
+  padding: 2px;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.ticket-item img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  border-radius: 7px;
+  object-fit: cover;
 }
 
 .ticket-price {
   text-align: center;
   color: rgb(89, 115, 89);
-
 }
-
 
 .ticket-item:hover {
   transform: translateY(-1px);
   cursor: pointer;
-  transition: all  .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .input-search {
   width: 200px;
   margin: 0 auto;
-  margin-top: 0px;
-  margin-bottom: 0px;
   margin-top: 20px;
   margin-bottom: 40px;
 }
-
 
 .btn {
   display: flex;
@@ -50,13 +49,14 @@
   width: 90px;
   height: 30px;
   background: gray;
-  transition: all  .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .btn:hover {
   transform: scale(1.2);
-  transition: all  .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
+
 .search-container {
   position: relative;
 }
@@ -69,4 +69,3 @@
   font-size: 28px;
   left: -100px;
 }
-

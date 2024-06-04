@@ -18,7 +18,7 @@
          (click)="goToTicketInfoPage(tour)"
          *ngFor="let tour of tickets; let i = index">
       <div class="ticket-img">
-        <img alt="tour" class="w-100" src="/assets/img/{{tour.img}}"/>
+        <img alt="Card" src="http://localhost:3000/public/{{tour.img}}">
       </div>
       <div class="ticket-title">{{tour.name}}</div>
       <div class="ticket-price">{{tour.price}}</div>

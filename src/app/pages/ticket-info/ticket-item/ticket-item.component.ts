@@ -1,12 +1,13 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {INearestTour, ITour, ITourLocation} from "../../../models/tours";
-import {ActivatedRoute} from "@angular/router";
-import {TiсketsStorageService} from "../../../services/tiсkets-storage/tiсkets-storage.service";
-import {IUser} from "../../../models/users";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../../services/user/user.service";
-import {TicketsService} from "../../../services/tickets/tickets.service";
-import {forkJoin} from "rxjs";
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ITour } from '../../../models/tours';
+import { UserService } from '../../../services/user/user.service';
+import { TicketsService } from '../../../services/tickets/tickets.service';
+import { IOrder } from 'src/app/models/order';
+import { forkJoin } from 'rxjs';
+import { INearestTour, ITourLocation } from '../../../models/tours';
+
 
 @Component({
   selector: 'app-ticket-item',
@@ -14,57 +15,98 @@ import {forkJoin} from "rxjs";
   styleUrls: ['./ticket-item.component.scss']
 })
 export class TicketItemComponent implements OnInit, AfterViewInit {
+  isNotFound: boolean = false;
   ticket: ITour | undefined;
-  user: IUser | null;
   userForm: FormGroup;
-  nearestTours: INearestTour[];
-  locationName: string | undefined
-  toursLocation: ITourLocation[];
-  newNearestTour: INearestTour[];
+  nearestTours: INearestTour[] = [];
+  tourLocations: ITourLocation[] = []
+  ticketSearchValue: string = '';
+  ticketRestSub: PushSubscription;
 
-  constructor(private route: ActivatedRoute,
-              private  ticketStorage: TiсketsStorageService,
-              private userService: UserService,
-              private  ticketService: TicketsService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private ticketService: TicketsService
+  ) {}
 
   ngOnInit(): void {
 
-    this.user = this.userService.getUser()
-
-    this.userForm = new FormGroup( {
-      firstName: new FormControl('', {validators: Validators.required}),
+    
+    this.userForm = new FormGroup({
+      firstName: new FormControl('', { validators: Validators.required }),
       lastName: new FormControl('', [Validators.required, Validators.minLength(2)]),
       cardNumber: new FormControl(''),
-      birthDay: new FormControl(''),
+      dateOfBirth: new FormControl(''),
       age: new FormControl(''),
-      citizen: new FormControl('')
+      citizenship: new FormControl(''),
     });
 
 
-    this.ticketService.getNameCountry().subscribe((data)=> {
-      this.newNearestTour = data
+    
+    // Получение информации о туре при инициализации компонента
+    this.getTourById();
+
+    forkJoin([this.ticketService.getNearestTours(), this.ticketService.getTourLocations()]).subscribe(([tours, locations]) => {
+      this.tourLocations = locations;
+      this.nearestTours = this.ticketService.transformData(tours, locations);
     })
 
+  }
 
-    const routeIdParam = this.route.snapshot.paramMap.get('id');
-    const queryIdParam = this.route.snapshot.queryParamMap.get('id');
-    const paramValueId = routeIdParam || queryIdParam;
-    if(paramValueId) {
-      const ticketStorage = this.ticketStorage.getStorage();
-      this.ticket = ticketStorage.find((el) => el.id === paramValueId);
-      console.log('this.ticket', this.ticket)
+  ngAfterViewInit() {
+    const user = this.userService.getUser();
+    if (user && user.cardNumber) {
+      this.userForm.controls['cardNumber'].setValue(user.cardNumber);
     }
   }
 
+  submitForm(): void {
+    if (this.userForm.invalid) {
+      return;
+    }
 
-  ngAfterViewInit() {
-    this.userForm.controls["cardNumber"].setValue(this.user?.cardNumber)
+    // Вызываем метод для отправки данных на сервер
+    this.initTour();
   }
 
-  onSubmit():void {}
+  initTour(): void {
+    const userData = this.userForm.getRawValue();
+    const postData = {...this.ticket, ...userData};
+  
+    const userId = this.userService.getUser()?.id || null;
+    const postObj: IOrder = {
+      age: postData.age,
+      birthDay: postData.birthDay,
+      cardNumber: postData.cardNumber,
+      tourId: postData._id,
+      userId: userId,
+    }
+    this.ticketService.sendTourData(postObj).subscribe();
+  }
 
-  selectDate(ev: Event): void {}
+  private getTourById(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
+    if (id) {
+      this.ticketService.getTourById(id).subscribe(
+        (tour: ITour) => {
+          console.log('Tour data:', tour);
+          this.ticket = tour;
+        },
+        (error) => {
+          console.error('Error fetching tour by ID:', error);
+        }
+      );
+    }
+  }
 
+  selectDate(ev: Event): void {
+    
+  }
 
-  protected readonly location = location;
+  getTourCountry(tour: INearestTour) {
+    return this.tourLocations.find(({id}) => tour.locationId === id)?.name || '-';
+  }
+
+  
 }

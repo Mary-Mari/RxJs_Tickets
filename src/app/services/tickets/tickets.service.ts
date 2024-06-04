@@ -1,72 +1,101 @@
-import { Injectable} from "@angular/core";
-import  {TicketsRestService} from "../rest/tickets-rest.service";
-import {forkJoin, map, Observable, of, Subject, switchMap} from "rxjs";
-import {INearestTour, INewNearestTour, ITour, ITourLocation, ITourTypeSelect} from "../../models/tours";
 
-@Injectable( {
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
+import { TicketsRestService } from '../rest/tickets-rest.service';
+import { ITour, INearestTour, ITourLocation, ITourTypeSelect } from '../../models/tours';
+
+@Injectable({
   providedIn: 'root'
 })
-export  class TicketsService {
-  private ticketSubject = new Subject<ITourTypeSelect>()
+export class TicketsService {
+  private ticketSubject = new Subject<ITourTypeSelect>();
 
-  constructor(private  ticketServiceRest: TicketsRestService) {
-  }
+  private ticketUpdateSubject = new Subject<ITour[]>();
+  readonly ticketUpdateSubject$ = this.ticketUpdateSubject.asObservable();
+
+  constructor(private ticketServiceRest: TicketsRestService) {}
 
   getTickets(): Observable<ITour[]> {
-    return this.ticketServiceRest.getTickets().pipe(map(
-
-      (value) => {
-        const singleTours = value.filter((el) => el.type === 'single');
-        return value.concat(singleTours)
-      }
-    ));
-
+    return this.ticketServiceRest.getTickets();
   }
+
+  getTourById(id: string): Observable<ITour> {
+    return this.ticketServiceRest.getTourById(id);
+  }
+
+  updateTicketList(data: ITour[]) {
+    this.ticketUpdateSubject.next(data);
+  }
+
   getTicketTypeObservable(): Observable<ITourTypeSelect> {
     return this.ticketSubject.asObservable();
   }
 
+  getSimilarTour(name: string) {
+    return this.ticketServiceRest.getSimilarTour(name)
+  }
 
-  updateTour(type:ITourTypeSelect): void {
+  updateTour(type: ITourTypeSelect): void {
     this.ticketSubject.next(type);
   }
 
   getError(): Observable<any> {
-    const errorObservable = this.ticketServiceRest.getRestError();
-
-    return errorObservable;
+    return this.ticketServiceRest.getRestError();
   }
 
   getNearestTours(): Observable<INearestTour[]> {
     return this.ticketServiceRest.getNearestTickets();
   }
 
-  getToursLocation(): Observable<ITourLocation[]> {
+  getTourLocations() {
     return this.ticketServiceRest.getLocationList();
   }
 
-
-
-  getNameCountry(): Observable<INearestTour[]> {
-    return forkJoin([this.getNearestTours(), this.getToursLocation()]).pipe(
-
-      switchMap(([nearestTour, tourLocation]) => {
-
-        const newArr: INewNearestTour[]= nearestTour.map((el) => {
-          const location = tourLocation.find((loc) => loc.id === el.locationId);
-          const newObj: any = {...el};
-          newObj.toursLocation = location.name
-          return newObj;
-        })
-        return of(newArr)
+  transformData(data: INearestTour[], tourLocations: ITourLocation[]) {
+    const newTicketData: INearestTour[] = [];
+    data.forEach((e) => {
+      newTicketData.push({
+        ...e,
+        region: tourLocations.find((region) => e.locationId === region.id)
       })
-    )
-
+    });
+    return newTicketData;
   }
 
+  // Добавляем метод для создания тура
+  createTour(formParams: FormData) {
+    return this.ticketServiceRest.createTour(formParams)
+}
+  
 
+  generateTours(): Observable<void> {
+    return this.ticketServiceRest.generateTours().pipe(
+      tap(() => {
+        this.ticketSubject.next({ type: 'update' } as any); // Обновление списка туров после генерации
+      })
+    );
+  }
 
+  deleteTours(): Observable<void> {
+    return this.ticketServiceRest.deleteTours().pipe(
+      tap(() => {
+        this.ticketSubject.next({ type: 'update' } as any); // Обновление списка туров после удаления
+      })
+    );
+  }
 
+  getNameCountry(): Observable<string[]> {
+    return this.ticketServiceRest.getNameCountry().pipe(
+      map(nearestTours => nearestTours.map(tour => tour.name))
+    );
+  }
 
+  sendTourData(data: any): Observable<any>{
+    return this.ticketServiceRest.sendTourData(data);
+  }
 
+  getTicketById(id: string): Observable<ITour>{
+    return this.ticketServiceRest.getTourById(id);
+  }
 }

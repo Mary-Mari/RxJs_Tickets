@@ -3,6 +3,7 @@ import {MessageService} from "primeng/api";
 import {IUser} from "../../../models/users";
 import {AuthService} from "../../../services/auth/auth.service";
 import {ConfigService} from "../../../../assets/config/config-service/config.service";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registration',
@@ -19,7 +20,8 @@ export class RegistrationComponent implements OnInit {
   showCardNumber: boolean;
 
   constructor( private  messageService: MessageService,
-               private  authService: AuthService) { }
+               private  authService: AuthService,
+              private http: HttpClient) { }
 
   ngOnInit(): void {
     this.showCardNumber = ConfigService.config.useUserCard
@@ -40,21 +42,22 @@ export class RegistrationComponent implements OnInit {
       psw: this.psw,
       login: this.login,
       cardNumber: this.cardNumber,
-      email: this.email
+      email: this.email,
+      id: this.login,
     }
+    this.http.post('http://localhost:3000/users/', userObj).subscribe((data:Object)=> {})
 
 
-    if(!this.authService.checkUser(userObj)) {
-      this. authService.setUser(userObj);
-      this.messageService.add({severity: 'success', summary: 'Регистрация прошла успешно'});
-    } else  {
-      this.messageService.add({severity: 'warn', summary: 'Пользователь уже зарегистрирован'});
-    }
-
-    if(this.storageValue) {
-      let jsonUser = JSON.stringify(userObj)
-      localStorage.setItem("token", jsonUser)
-    }
+    this.http.post<IUser>('http://localhost:3000/users/', userObj).subscribe((data) => {
+      if (this.storageValue) {
+        const objUserJsonStr = JSON.stringify(userObj);
+        window.localStorage.setItem('user_'+userObj.login, objUserJsonStr);
+      }
+      this.messageService.add({severity:'success', summary:'Регистрация прошла успешно'});
+ 
+    }, ()=> {
+      this.messageService.add({severity:'warn', summary:'Пользователь уже зарегистрирован'});
+    });
   }
 
 

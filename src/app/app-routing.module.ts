@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TicketItemComponent } from './pages/ticket-info/ticket-item/ticket-item.component';
 
 
 
@@ -21,6 +22,11 @@ const routes: Routes = [
     path: 'orders',
     loadChildren: () => import('./pages/orders/orders.module').then(m => m.OrdersModule)
   },
+  { 
+    path: 'tickets/:id', // Маршрут для отображения информации о конкретном туре
+    component: TicketItemComponent
+  },
+
   { path: '**',
     redirectTo: 'auth'
   },

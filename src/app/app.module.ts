@@ -6,12 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgOptimizedImage } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthService } from './services/auth/auth.service';
-import { TicketsModule } from './pages/tickets/tickets.module';
-import { TicketsRestService } from './services/rest/tickets-rest.service';
-import { TicketsService } from './services/tickets/tickets.service';
 import { RestInterceptorsService } from './services/interceptors/restinterceptors';
 import { ConfigService } from '../assets/config/config-service/config.service';
+import { SettingsComponent } from './pages/settings/settings/settings.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { StatisticComponent } from './pages/settings/statistic/statistic.component';
 
 function initializeApp(config: ConfigService) {
   return () => config.loadPromise().then(() => {
@@ -21,13 +21,17 @@ function initializeApp(config: ConfigService) {
 @NgModule({
   declarations: [
     AppComponent,
+  
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    FormsModule,
+    ReactiveFormsModule
+    
   ],
   providers: [
     ConfigService,

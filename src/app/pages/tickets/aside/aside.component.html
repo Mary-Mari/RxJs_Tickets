@@ -17,10 +17,18 @@
                 (onChange)="changeTourType($event)">
     </p-dropdown>
   </div>
-  <button class="btn btn-danger mt-4" type="submit" (click)="initRestError($event)" >Ошибкой</button>
+  <button class="btn btn-danger mt-4" type="submit" (click)="initRestError($event)" >Ошибка</button>
 
   <div class="mt-4">
     <button (click)="initSettingsData()" class="btn btn-dark" >Обновить настройки</button>
+  </div>
+
+  <div class="generate-button mt-3">
+    <button (click)="initTours()" class="btn btn-dark"  >Сформировать туры</button>
+  </div>
+
+  <div class="delete-button mt-3">
+    <button (click)="deleteTours()" class="btn btn-dark"  >Удалить туры</button>
   </div>
 </div>
 <p-toast position="top-left" ></p-toast>

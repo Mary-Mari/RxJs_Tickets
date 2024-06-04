@@ -7,35 +7,48 @@ import {BehaviorSubject} from "rxjs";
 })
 
 export class UserService {
-  private user: IUser;
+  private user: IUser | null = null;
   private  usersStorage: IUser[] = [];
   private  userBehSubject = new BehaviorSubject<IUser | null>(null);
   readonly userBehSubject$ = this.userBehSubject.asObservable()
-  private token: string;
+  private token: string | null;
   constructor() { }
 
 
-  getUser(): IUser {
+  getUser(): IUser | null {
+      return  this.user;
+  }
 
-    if(this.user) {
-      return  this.user
-    } else {
-      const userFromStore = JSON.parse(localStorage.getItem("token") || '');
-      return  userFromStore
-    }
-  };
-  setUser(user: IUser):void {
+  setUser(user: IUser) {
     this.user = user
-    this.userBehSubject.next(this.user)
-  };
+  }
 
-
-
-  setToken(token: string) {
+  setToken(token: string): void {
     this.token = token;
   }
 
-  getToken(): string {
+  getToken(): string| null {
     return this.token;
   }
-}
+
+  setToStore(token: string) {
+    window.localStorage.setItem('userToken', token)
+  }
+
+  getFromStore() {
+    return window.localStorage.getItem('userToken')
+  }
+
+  getAllToken(): string | null {
+    if (this.token) {
+      return this.token;
+    } else {
+      return this.getFromStore()
+    }
+  }
+
+  removeUser(){
+    
+  }
+  }
+

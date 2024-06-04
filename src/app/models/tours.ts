@@ -7,6 +7,7 @@ export interface ITour {
   id:string,
   type?:string,
   date?: string,
+  _id?:string
 }
 
 export interface  ITourTypeSelect {
@@ -23,8 +24,9 @@ export interface  ITourLocation {
   name: string,
   id: string
 }
-export interface INewNearestTour extends  INearestTour {
-  countryName: string
+export interface INearestTour {
+  locationId: string
+  region?: ITourLocation
 }
 
 

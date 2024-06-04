@@ -12,7 +12,7 @@ import {AuthService} from "../../../services/auth/auth.service";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy,  OnChanges{
+export class HeaderComponent implements OnInit, OnDestroy{
   @Input() menuType: IMenuType;
   items: MenuItem[];
   time: Date;
@@ -53,8 +53,8 @@ export class HeaderComponent implements OnInit, OnDestroy,  OnChanges{
         label: 'Выйти',
         routerLink: ['/auth'],
 
-        command:(ev) => {
-          this.removeUser()
+        command:() => {
+          this.userService.removeUser()
         }
       },
     ]
@@ -63,13 +63,6 @@ export class HeaderComponent implements OnInit, OnDestroy,  OnChanges{
     if(this.timerInterval) {
       window.clearInterval(this.timerInterval)
     }
-  }
-
-  ngOnChanges() {
-  }
-
-  private removeUser() {
-
   }
 }
 

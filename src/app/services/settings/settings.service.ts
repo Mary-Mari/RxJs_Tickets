@@ -12,14 +12,13 @@ export class SettingsService {
 
   constructor() { }
 
-  loadUserSetings(): Observable<ISettings> {
-    const setingObservable = new Observable<ISettings>((subscriber) => {
-      const settingsData: ISettings = {
+  loadUserSettings(): Observable<ISettings> {
+    return new Observable<ISettings>((subscriber) => {
+      const settingData = {
         saveToken: true
-      };
-      subscriber.next(settingsData)
+      }
+      subscriber.next(settingData)
     });
-    return setingObservable
   }
 
   loadUserSettingsSubject(data: ISettings):any {
